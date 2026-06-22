@@ -6,7 +6,7 @@ import * as THREE from 'three'
 
 // Clean Floating Box with textured backgrounds
 function FloatingBox({ position, scale, rotationSpeed, color, floatSpeed, floatRange, patternType }: any) {
-  const meshRef = useRef<THREE.Mesh>(null)
+  const meshRef = useRef<THREE.LineSegments>(null)
   const initialRotation = useMemo(() => [
     Math.random() * Math.PI * 2,
     Math.random() * Math.PI * 2,
