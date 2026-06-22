@@ -1,0 +1,435 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF8F5;
+    --ink: #1A1714;
+    --rose: #C8877A;
+    --muted: #9A918A;
+    --line: rgba(26,23,20,0.10);
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.4rem 2.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(250,248,245,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--line);
+  }
+  .nav-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 17px;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 2.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #E8DDD6 0%, #D4C5BC 40%, #C2B0A7 100%);
+    z-index: 0;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,23,20,0.45) 0%, transparent 60%);
+    z-index: 1;
+  }
+  /* Soft abstract photo stand-in */
+  .hero-art {
+    position: absolute; inset: 0; z-index: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-art svg { width: 100%; height: 100%; }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 680px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1.2rem;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(42px, 7vw, 76px);
+    line-height: 1.05;
+    color: #fff;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: #E8C9C2;
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.04em;
+    font-weight: 300;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 2rem; right: 2.5rem; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.4);
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 0.5px; height: 40px;
+    background: rgba(255,255,255,0.3);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(1); opacity: 0.3; }
+    50% { transform: scaleY(0.5); opacity: 0.8; }
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 2.5rem; }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 3rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; max-width: 48px;
+    height: 0.5px;
+    background: var(--rose);
+  }
+
+  /* TIMELINE */
+  .timeline { max-width: 560px; }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 80px 1px 1fr;
+    gap: 0 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .tl-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--muted);
+    text-align: right;
+    padding-top: 3px;
+  }
+  .tl-line {
+    background: var(--line);
+    position: relative;
+  }
+  .tl-dot {
+    position: absolute;
+    top: 6px; left: 50%;
+    transform: translateX(-50%);
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--rose);
+  }
+  .tl-body {}
+  .tl-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .tl-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* PHOTO GRID */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 200px 200px;
+    gap: 6px;
+  }
+  .photo-cell {
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .photo-cell:first-child {
+    grid-row: 1 / 3;
+    grid-column: 1 / 2;
+  }
+  .photo-inner {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.05em;
+  }
+  .p1 { background: #C2B0A7; }
+  .p2 { background: #B8A89E; }
+  .p3 { background: #D4C4BC; }
+  .p4 { background: #A89890; }
+  .p5 { background: #C9B8B0; }
+
+  /* LETTER */
+  .letter-wrap {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .letter-open {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .letter-sign {
+    margin-top: 2.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  /* REASONS */
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    border: 0.5px solid var(--line);
+  }
+  .reason-item {
+    padding: 1.75rem 1.5rem;
+    border: 0.5px solid var(--line);
+  }
+  .reason-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: #E8DDD6;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+  .reason-text {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 2.5rem;
+    border-top: 0.5px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .footer-rose {
+    font-size: 18px;
+    color: var(--rose);
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 0.5px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-name">for alyssa ♡</span>
+  <ul class="nav-links">
+    <li><a href="#">our story</a></li>
+    <li><a href="#">moments</a></li>
+    <li><a href="#">letter</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-art">
+    <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g1" cx="30%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#E0CEC6"/>
+          <stop offset="100%" stop-color="#BCA89E"/>
+        </radialGradient>
+        <radialGradient id="g2" cx="75%" cy="60%" r="50%">
+          <stop offset="0%" stop-color="#D4BFBA"/>
+          <stop offset="100%" stop-color="#C4A89E" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="800" height="600" fill="url(#g1)"/>
+      <rect width="800" height="600" fill="url(#g2)"/>
+      <!-- abstract soft shapes -->
+      <ellipse cx="200" cy="200" rx="300" ry="200" fill="rgba(255,255,255,0.06)" transform="rotate(-20 200 200)"/>
+      <ellipse cx="600" cy="400" rx="250" ry="150" fill="rgba(180,140,130,0.12)" transform="rotate(10 600 400)"/>
+      <circle cx="400" cy="300" r="180" fill="rgba(255,255,255,0.03)"/>
+    </svg>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">a small gift, made with everything</p>
+    <h1 class="hero-title">You are<br>my <em>favorite</em><br>everything.</h1>
+    <p class="hero-sub">Made for you — with love, always.</p>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section>
+  <p class="section-label">our story</p>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Jan '23</div>
+      <div class="tl-line"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <h3 class="tl-title">The first hello</h3>
+        <p class="tl-desc">You walked in and everything got quieter. I didn't know it then, but that was the beginning.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Mar '23</div>
+      <div class="tl-line"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <h3 class="tl-title">Our first night out</h3>
+        <p class="tl-desc">You laughed at something I said and I decided right there — I wanted to make you laugh forever.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Jun '23</div>
+      <div class="tl-line"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <h3 class="tl-title">I knew</h3>
+        <p class="tl-desc">Somewhere between the drive home and the goodnight text, I knew I was completely yours.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Today</div>
+      <div class="tl-line"><div class="tl-dot"></div></div>
+      <div class="tl-body">
+        <h3 class="tl-title">Still here, still you</h3>
+        <p class="tl-desc">Every ordinary day with you feels like something I'd write down to remember.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PHOTOS -->
+<section>
+  <p class="section-label">moments</p>
+  <div class="photo-grid">
+    <div class="photo-cell p1"><div class="photo-inner">your photo here</div></div>
+    <div class="photo-cell p2"><div class="photo-inner">your photo here</div></div>
+    <div class="photo-cell p3"><div class="photo-inner">your photo here</div></div>
+    <div class="photo-cell p4"><div class="photo-inner">your photo here</div></div>
+    <div class="photo-cell p5"><div class="photo-inner">your photo here</div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- REASONS -->
+<section>
+  <p class="section-label">reasons</p>
+  <div class="reasons-grid">
+    <div class="reason-item"><div class="reason-num">01</div><p class="reason-text">The way you laugh before the punchline even lands.</p></div>
+    <div class="reason-item"><div class="reason-num">02</div><p class="reason-text">How you make every room feel warmer just by being in it.</p></div>
+    <div class="reason-item"><div class="reason-num">03</div><p class="reason-text">You remember the small things no one else notices.</p></div>
+    <div class="reason-item"><div class="reason-num">04</div><p class="reason-text">The quiet mornings feel complete when you're there.</p></div>
+    <div class="reason-item"><div class="reason-num">05</div><p class="reason-text">You are somehow both soft and the strongest person I know.</p></div>
+    <div class="reason-item"><div class="reason-num">06</div><p class="reason-text">I'm better at being me because I know you.</p></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- LETTER -->
+<section>
+  <p class="section-label">a letter</p>
+  <div class="letter-wrap">
+    <p class="letter-open">My love,</p>
+    <p class="letter-body">
+      I made this because I wanted you to have something to come back to — on a hard day, on a quiet night, whenever you need to remember that you are so deeply loved.<br><br>
+      There are no words big enough for what you mean to me. So I just kept the small ones: the way you say my name, the coffee you make without asking, the hand that finds mine in the dark.<br><br>
+      Thank you for choosing me, every single day.
+    </p>
+    <p class="letter-sign">— yours, always ♡</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">made with love, just for you</span>
+  <span class="footer-rose">♡</span>
+</footer>
+
+</body>
+</html>
