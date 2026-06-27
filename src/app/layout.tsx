@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import dynamic from 'next/dynamic'
 import ScrollProgress from '@/components/ScrollProgress'
+import BackgroundMusic from '@/components/BackgroundMusic'
 import { Cormorant_Garamond, Tulpen_One } from 'next/font/google'
 
 const cormorant = Cormorant_Garamond({
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body className="antialiased">
         <CustomCursor />
         <ScrollProgress />
+        <BackgroundMusic />
         {children}
       </body>
     </html>

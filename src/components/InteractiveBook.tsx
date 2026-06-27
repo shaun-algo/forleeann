@@ -9,7 +9,7 @@ export default function InteractiveBook() {
   const [direction, setDirection] = useState<'forward' | 'backward' | null>(null)
   const [hoverSide, setHoverSide] = useState<'left' | 'right' | null>(null)
   const [isMobile, setIsMobile] = useState(false)
-  
+
   const bookClosingAudioRef = useRef<HTMLAudioElement | null>(null)
   const leafOpenAudioRef = useRef<HTMLAudioElement | null>(null)
 
@@ -65,7 +65,7 @@ export default function InteractiveBook() {
     {
       id: 0,
       isCover: true,
-      title: 'A Letter',
+      title: '📖',
       author: 'For You',
       front: {
         isCover: true,
@@ -74,16 +74,16 @@ export default function InteractiveBook() {
             <div className="w-full text-center mt-4">
               <div className="border border-[#C8B8E8]/30 p-5 rounded-lg bg-[#1E1530]/40 backdrop-blur-[2px]">
                 <h1 className="font-serif font-light uppercase tracking-[0.1em] mb-3 text-[#D5C8EE]" style={{ fontSize: 'clamp(20px, 5vw, 44px)' }}>
-                  A Letter
+                  Leaves
                 </h1>
                 <div className="w-10 h-[1px] bg-[#C8B8E8] mx-auto my-4" />
                 <p className="font-serif italic tracking-[0.2em] text-[#F7F5FC]" style={{ fontSize: 'clamp(10px, 1.8vw, 18px)' }}>
-                  FOR YOU
+                  short msgs
                 </p>
               </div>
             </div>
             <div className="text-center font-serif tracking-[0.25em] text-[#F7F5FC]/80 animate-pulse mb-6" style={{ fontSize: 'clamp(7px, 1.2vw, 12px)' }}>
-              CLICK TO OPEN
+
             </div>
           </div>
         )
@@ -94,7 +94,7 @@ export default function InteractiveBook() {
           <div className="flex flex-col items-center justify-center h-full p-5 text-center bg-[#F7F5FC]">
             <div className="border border-[#9B7FC8]/20 p-3 rounded-lg w-full h-full flex flex-col justify-center items-center">
               <span className="text-2xl text-[#9B7FC8] mb-3">♡</span>
-              <h2 className="font-serif italic text-[#1E1A2E] mb-2" style={{ fontSize: 'clamp(16px, 3.5vw, 30px)' }}>Dear Honey
+              <h2 className="font-serif italic text-[#1E1A2E] mb-2" style={{ fontSize: 'clamp(16px, 3.5vw, 30px)' }}>MY HONEY
               </h2>
               <p className="text-[#9B7FC8] font-serif italic mb-3" style={{ fontSize: 'clamp(8px, 1.1vw, 12px)', letterSpacing: '0.05em' }}>
                 Mundulum quod tibi soli feci
@@ -113,15 +113,15 @@ export default function InteractiveBook() {
       front: {
         content: (
           <div className="page__content-blockquote">
-            <p className="page__content-blockquote-text">My love,</p>
-            <p className="page__content-blockquote-text">I made this because I wanted you to have something to come back to — on a hard day, on a quiet night, whenever you need to remember that you are so deeply loved.</p>
+            <p className="page__content-blockquote-text">Love,</p>
+            <p className="page__content-blockquote-text">Ginawa ko to para may babalikan ka whenever you need a reminder na sobrang loved ka. Di ko alam paano ko naswerete na ako napili mo.</p>
           </div>
         )
       },
       back: {
         content: (
           <div className="page__content-text">
-            <p>Every moment we've shared has become a part of who I am. The laughter, the tears, the quiet moments in between — they're all woven into the fabric of my heart.</p>
+            <p>Thank you for staying. Kahit ganito ako, kahit may mga pagkukulang ako, nandito ka pa rin. You chose to love me kahit alam mo nang mahirap.</p>
           </div>
         )
       }
@@ -132,14 +132,14 @@ export default function InteractiveBook() {
       front: {
         content: (
           <div className="page__content-text">
-            <p>There are no words big enough for what you mean to me. So I just kept the small ones: the way you say my name, the coffee you make without asking, the hand that finds mine in the dark.</p>
+            <p>Sorry kung minsan ang layo ko in terms of quality time. Hindi dahil ayaw ko, you know naman nga amaw ko sabayan pa ng pagka busy ko sa buhay, pag help sa parents. Pero alam mo naman honey, ikaw pa rin cutiepie ko forever.</p>
           </div>
         )
       },
       back: {
         content: (
           <div className="page__content-text">
-            <p>You've taught me that love isn't always grand gestures. Sometimes it's just showing up, over and over, even when it's hard. Especially when it's hard.</p>
+            <p>Sorry din kung di ako masyado emotionally available minsan honey. I know hindi ko lagi napapakita, pero you deserve all the love and attention in the world po, and deserve na deserve mo mga mabubuting tao na nasa paligid mo hehe.</p>
           </div>
         )
       }
@@ -150,14 +150,14 @@ export default function InteractiveBook() {
       front: {
         content: (
           <div className="page__content-text">
-            <p>Thank you for choosing me, every single day. In a world full of options, you keep choosing us. That's the greatest gift I could ever receive.</p>
+            <p>Years of LDR. Alam kong ang hirap, alam nating dalawa na mahirap. May mga araw na parang wala tayong time para mag-usap like yeah. Pero you stayed, kahit ang daming pinagdaanan natin, Thank you so much.</p>
           </div>
         )
       },
       back: {
         content: (
           <div className="page__content-text">
-            <p>I promise to keep choosing you too — in the morning light and the midnight dark, in the easy days and the hard ones, always.</p>
+            <p>Lahat ng struggles, hindi mo ginawang rason para umalis. Instead, mas naging strong pa tayo. Thank you for not giving up on us honey, I'm gonna cry.</p>
           </div>
         )
       }
@@ -168,18 +168,18 @@ export default function InteractiveBook() {
       front: {
         content: (
           <div className="page__content-text" style={{ textAlign: 'center' }}>
-            <p style={{ fontStyle: 'italic', textIndent: 0, marginBottom: '0.4em', fontSize: 'inherit' }}>Tu es</p>
-            <p style={{ fontStyle: 'italic', textIndent: 0, marginBottom: '0.4em', fontSize: 'inherit' }}>mea carissima</p>
-            <p style={{ fontStyle: 'italic', textIndent: 0, marginBottom: '1.2em', fontSize: 'inherit' }}>omnia.</p>
-            <p style={{ textIndent: 0, fontSize: '0.72em', color: '#B8A9A5', letterSpacing: '0.05em' }}>You are my favorite everything.</p>
+            <p style={{ fontStyle: 'italic', textIndent: 0, marginBottom: '0.4em', fontSize: 'inherit' }}>Ikaw</p>
+            <p style={{ fontStyle: 'italic', textIndent: 0, marginBottom: '0.4em', fontSize: 'inherit' }}>home ko,</p>
+            <p style={{ fontStyle: 'italic', textIndent: 0, marginBottom: '1.2em', fontSize: 'inherit' }}>bebi</p>
+            <p style={{ textIndent: 0, fontSize: '0.72em', color: '#B8A9A5', letterSpacing: '0.05em' }}>You're my favorite person.</p>
           </div>
         )
       },
       back: {
         content: (
           <div className="page__content-text" style={{ textAlign: 'center' }}>
-            <p style={{ fontStyle: 'italic', textIndent: 0, marginBottom: '1.2em', fontSize: 'inherit' }}>Omne momentum<br />memoriam nostri tenet.</p>
-            <p style={{ textIndent: 0, fontSize: '0.72em', color: '#B8A9A5', letterSpacing: '0.05em' }}>Every detail holds a memory of us.</p>
+            <p style={{ fontStyle: 'italic', textIndent: 0, marginBottom: '1.2em', fontSize: 'inherit' }}>XOXAD,<br />nami-miss na kita super</p>
+            <p style={{ textIndent: 0, fontSize: '0.72em', color: '#B8A9A5', letterSpacing: '0.05em' }}>Every little thing reminds me of you.</p>
           </div>
         )
       }
@@ -190,14 +190,14 @@ export default function InteractiveBook() {
       front: {
         content: (
           <div className="page__content-text">
-            <p>This letter isn't enough. It could never be enough. But it's a start — a small way of saying everything I feel but can never fully express.</p>
+            <p>Honey, I'll try to be better. Better sa pag-show ng emotions ko, better sa pag-effort, better sa pag-make time. Deserve mo lahat ng 'yon honey.</p>
           </div>
         )
       },
       back: {
         content: (
           <div className="page__content-blockquote-text" style={{ marginTop: '2rem', textAlign: 'center' }}>
-            — yours, always ♡
+            — always my honey ♡
           </div>
         )
       }
@@ -208,12 +208,13 @@ export default function InteractiveBook() {
       front: {
         isInsideCover: true,
         content: (
-          <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-[#F7F5FC]">
-            <div className="border border-[#9B7FC8]/20 p-4 sm:p-6 rounded-lg w-full h-full flex flex-col justify-center items-center">
-              <span className="text-4xl text-[#9B7FC8] animate-pulse">♡</span>
-              <p className="mt-4 text-xs tracking-[0.2em] text-[#8A82A0] uppercase">
-                Turn page to close book
-              </p>
+          <div className="flex flex-col items-center justify-center h-full p-5 text-center bg-[#F7F5FC]">
+            <div className="border border-[#9B7FC8]/20 p-3 rounded-lg w-full h-full flex flex-col justify-center items-center">
+              <img
+                src="/foreheadkiss.png"
+                alt=""
+                className="w-full h-full object-contain"
+              />
             </div>
           </div>
         )
@@ -222,11 +223,6 @@ export default function InteractiveBook() {
         isCover: true,
         content: (
           <div className="flex flex-col items-center justify-center h-full py-10 px-4 text-[#D4AF37] select-none">
-            <div className="text-center font-serif italic text-[#D5C8EE]" style={{ fontSize: 'clamp(18px, 4vw, 36px)', marginBottom: '12px' }}>
-              The End
-            </div>
-            <div className="w-10 h-[1px] bg-[#C8B8E8] my-4" />
-            <span className="text-[#F7F5FC]" style={{ fontSize: 'clamp(16px, 3vw, 26px)' }}>♡</span>
           </div>
         )
       }
@@ -247,11 +243,11 @@ export default function InteractiveBook() {
     //   front cover open  : 0 → 1          → book-closing
     //   back cover close  : (totalLeaves-1) → totalLeaves  → book-closing
     //   all other leafs   :                               → leaf_open
-    const isFrontCoverOpen   = currentPage === 0               && pageIndex === 1
-    const isBackCoverClose   = currentPage === totalLeaves - 1 && pageIndex === totalLeaves
-    const isFrontCoverClose  = currentPage === 1               && pageIndex === 0
-    const isBackCoverOpen    = currentPage === totalLeaves     && pageIndex === totalLeaves - 1
-    const isCoverTransition  = isFrontCoverOpen || isBackCoverClose || isFrontCoverClose || isBackCoverOpen
+    const isFrontCoverOpen = currentPage === 0 && pageIndex === 1
+    const isBackCoverClose = currentPage === totalLeaves - 1 && pageIndex === totalLeaves
+    const isFrontCoverClose = currentPage === 1 && pageIndex === 0
+    const isBackCoverOpen = currentPage === totalLeaves && pageIndex === totalLeaves - 1
+    const isCoverTransition = isFrontCoverOpen || isBackCoverClose || isFrontCoverClose || isBackCoverOpen
 
     if (isCoverTransition) {
       // book-closing sound for front/back cover open & close
@@ -274,8 +270,20 @@ export default function InteractiveBook() {
     }, 900)
   }
 
-  const getLeftStackShadow = () => {
-    const leftCount = visualPage
+  // Calculate how many pages are actually lying flat on the left and right stacks.
+  // During flip animations, we exclude the page currently in the air.
+  let flatLeftPages = currentPage
+  let flatRightPages = totalLeaves - currentPage
+
+  if (isAnimating) {
+    if (direction === 'forward') {
+      flatLeftPages = currentPage - 1
+    } else if (direction === 'backward') {
+      flatRightPages = totalLeaves - (currentPage + 1)
+    }
+  }
+
+  const getLeftStackShadow = (leftCount: number) => {
     if (leftCount <= 0) return 'none'
     let shadow = ''
     const layers = Math.min(leftCount, 4)
@@ -286,8 +294,7 @@ export default function InteractiveBook() {
     return shadow
   }
 
-  const getRightStackShadow = () => {
-    const rightCount = totalLeaves - visualPage
+  const getRightStackShadow = (rightCount: number) => {
     if (rightCount <= 0) return 'none'
     let shadow = ''
     const layers = Math.min(rightCount, 4)
@@ -303,6 +310,9 @@ export default function InteractiveBook() {
   // forward-closed  → front cover lives on the RIGHT half  → shift wrapper left by 25 %
   // backward-closed → back cover lives on the LEFT half   → shift wrapper right by 25 %
   const closedShift = currentPage === 0 ? '-25%' : currentPage === totalLeaves ? '25%' : '0%'
+
+  const showLeftShadowBed = flatLeftPages > 0
+  const showRightShadowBed = flatRightPages > 0
 
   return (
     <div className="flex flex-col items-center justify-center py-8 px-4 w-full select-none">
@@ -333,7 +343,7 @@ export default function InteractiveBook() {
         {/* Left stack shadow */}
         <div
           style={{
-            display: visualPage > 0 ? 'block' : 'none',
+            display: showLeftShadowBed ? 'block' : 'none',
             position: 'absolute',
             left: '1.5%',
             top: '2%',
@@ -341,9 +351,9 @@ export default function InteractiveBook() {
             height: '96%',
             backgroundColor: '#F7F5FC',
             borderRadius: '8px 0 0 8px',
-            boxShadow: getLeftStackShadow(),
-            opacity: visualPage > 0 ? 1 : 0,
-            transition: 'opacity 0.9s ease',
+            boxShadow: getLeftStackShadow(flatLeftPages),
+            opacity: showLeftShadowBed ? 1 : 0,
+            transition: 'opacity 0.3s ease',
             pointerEvents: 'none',
             zIndex: 0
           }}
@@ -352,7 +362,7 @@ export default function InteractiveBook() {
         {/* Right stack shadow */}
         <div
           style={{
-            display: visualPage < totalLeaves ? 'block' : 'none',
+            display: showRightShadowBed ? 'block' : 'none',
             position: 'absolute',
             right: '1.5%',
             top: '2%',
@@ -360,9 +370,9 @@ export default function InteractiveBook() {
             height: '96%',
             backgroundColor: '#F7F5FC',
             borderRadius: '0 8px 8px 0',
-            boxShadow: getRightStackShadow(),
-            opacity: visualPage < totalLeaves ? 1 : 0,
-            transition: 'opacity 0.9s ease',
+            boxShadow: getRightStackShadow(flatRightPages),
+            opacity: showRightShadowBed ? 1 : 0,
+            transition: 'opacity 0.3s ease',
             pointerEvents: 'none',
             zIndex: 0
           }}
@@ -476,7 +486,7 @@ export default function InteractiveBook() {
                     ? '0 12px 30px rgba(0, 0, 0, 0.25), inset -3px 0 10px rgba(0, 0, 0, 0.05)'
                     : '0 4px 12px rgba(0, 0, 0, 0.06), inset 3px 0 10px rgba(0, 0, 0, 0.01)',
                   background: leaf.front.isCover
-                    ? 'radial-gradient(circle, #4A3570 0%, #211340 100%)'
+                    ? 'radial-gradient(circle, #8B7AB5 0%, #6B5B95 100%)'
                     : leaf.front.isInsideCover
                       ? '#F7F5FC'
                       : 'linear-gradient(to right, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0) 8%), #F7F5FC',
@@ -525,7 +535,7 @@ export default function InteractiveBook() {
                     ? '0 12px 30px rgba(0, 0, 0, 0.25), inset 3px 0 10px rgba(0, 0, 0, 0.05)'
                     : '0 4px 12px rgba(0, 0, 0, 0.06), inset -3px 0 10px rgba(0, 0, 0, 0.01)',
                   background: leaf.back.isCover
-                    ? 'radial-gradient(circle, #4A3570 0%, #211340 100%)'
+                    ? 'radial-gradient(circle, #8B7AB5 0%, #6B5B95 100%)'
                     : leaf.back.isInsideCover
                       ? '#F7F5FC'
                       : 'linear-gradient(to left, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0) 8%), #F7F5FC',
@@ -586,7 +596,7 @@ export default function InteractiveBook() {
         <button
           onClick={() => currentPage > 0 && handlePageChange(currentPage - 1)}
           disabled={currentPage === 0 || isAnimating}
-          className="w-12 h-12 rounded-full flex items-center justify-center transition-all font-medium disabled:opacity-30 disabled:cursor-not-allowed bg-[#7A68B0] text-white hover:bg-[#6858A0] hover:scale-110 shadow-md"
+          className="w-12 h-12 rounded-full flex items-center justify-center transition-all font-medium disabled:opacity-30 disabled:cursor-not-allowed bg-[#8B7AB5] text-white hover:bg-[#6B5B95] hover:scale-110 shadow-md"
           style={{ fontFamily: 'var(--font-cormorant), serif', fontSize: '20px' }}
         >
           &lt;
@@ -594,7 +604,7 @@ export default function InteractiveBook() {
         <button
           onClick={() => currentPage < totalLeaves && handlePageChange(currentPage + 1)}
           disabled={currentPage === totalLeaves || isAnimating}
-          className="w-12 h-12 rounded-full flex items-center justify-center transition-all font-medium disabled:opacity-30 disabled:cursor-not-allowed bg-[#7A68B0] text-white hover:bg-[#6858A0] hover:scale-110 shadow-md"
+          className="w-12 h-12 rounded-full flex items-center justify-center transition-all font-medium disabled:opacity-30 disabled:cursor-not-allowed bg-[#8B7AB5] text-white hover:bg-[#6B5B95] hover:scale-110 shadow-md"
           style={{ fontFamily: 'var(--font-cormorant), serif', fontSize: '20px' }}
         >
           &gt;

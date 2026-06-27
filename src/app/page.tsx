@@ -3,12 +3,16 @@
 import { useState, useEffect, useRef, memo } from 'react'
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
+import Gallery3D from '@/components/Gallery3D'
+import Fireworks from '@/components/Fireworks'
+import FlowerMatchingGame from '@/components/FlowerMatchingGame'
 
 // 3D Background with clean styling - optimized loading
 const InteractiveBook = dynamic(() => import('@/components/InteractiveBook'), { ssr: false, loading: () => <div className="w-full h-full bg-[#F7F5FC] animate-pulse" /> })
+const Butterflies = dynamic(() => import('@/components/Butterflies'), { ssr: false })
 
 // Navigation
-function Navigation() {
+function Navigation({ hasFlower, onCartClick, cartRef, hasMinimizedOnce, shouldShake }: { hasFlower: boolean; onCartClick: () => void; cartRef: React.RefObject<HTMLButtonElement>; hasMinimizedOnce: boolean; shouldShake: boolean }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -38,7 +42,7 @@ function Navigation() {
         </motion.a>
 
         <div className="hidden md:flex items-center gap-12">
-          {['Our Story', 'Gallery', 'Letter'].map((item, i) => (
+          {['Gallery', 'Letter'].map((item, i) => (
             <motion.a
               key={item}
               href={`#${item.toLowerCase().replace(' ', '-')}`}
@@ -53,14 +57,52 @@ function Navigation() {
           ))}
         </div>
 
-        <motion.button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden w-8 h-6 flex flex-col justify-between"
-        >
-          <span className={`block h-px bg-white/80 transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`block h-px bg-white/80 transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-          <span className={`block h-px bg-white/80 transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-        </motion.button>
+        <div className="flex items-center gap-4">
+          <motion.button
+            ref={cartRef}
+            onClick={onCartClick}
+            animate={shouldShake ? { x: [0, -5, 5, -5, 5, 0] } : { x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="relative w-10 h-10 flex items-center justify-center"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`transition-colors ${hasFlower ? 'text-[#D5C8EE]' : 'text-white/60'}`}
+            >
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            {hasMinimizedOnce && (
+              <motion.img
+                initial={{ scale: 0, rotate: -20 }}
+                animate={{ scale: 1, rotate: 0 }}
+                src="/flower.png"
+                alt="Flower"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 object-contain"
+              />
+            )}
+          </motion.button>
+
+          <motion.button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden w-8 h-6 flex flex-col justify-between"
+          >
+            <span className={`block h-px bg-white/80 transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`block h-px bg-white/80 transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
+            <span className={`block h-px bg-white/80 transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          </motion.button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -71,7 +113,7 @@ function Navigation() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden pt-6"
           >
-            {['Our Story', 'Gallery', 'Letter'].map((item, i) => (
+            {['Gallery', 'Letter'].map((item, i) => (
               <motion.a
                 key={item}
                 href={`#${item.toLowerCase().replace(' ', '-')}`}
@@ -92,9 +134,17 @@ function Navigation() {
 
 // Section Divider - Clean minimal line
 function SectionDivider() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-50px' })
+
   return (
-    <div className="flex items-center justify-center py-4">
-      <div className="w-24 h-px bg-gradient-to-r from-transparent via-[#BDB0D8] to-transparent" />
+    <div ref={ref} className="flex items-center justify-center py-4">
+      <motion.div
+        initial={{ width: 0, opacity: 0 }}
+        animate={isInView ? { width: 96, opacity: 1 } : { width: 0, opacity: 0 }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        className="h-px bg-gradient-to-r from-transparent via-[#BDB0D8] to-transparent"
+      />
     </div>
   )
 }
@@ -132,6 +182,7 @@ const Hero = memo(function Hero() {
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-end overflow-hidden">
+
       {/* Hero background image */}
       <div
         className="absolute inset-0"
@@ -144,7 +195,7 @@ const Hero = memo(function Hero() {
       />
 
       {/* Simple dark overlay for text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/15 to-black/25" />
 
       {/* Simple ambient orbs - reduced complexity */}
       <motion.div
@@ -176,7 +227,7 @@ const Hero = memo(function Hero() {
           className="font-serif font-light text-5xl md:text-7xl lg:text-8xl text-white leading-[1.08] mb-8 drop-shadow-lg"
         >
           Tu es<br />
-          mea <span className="italic text-[#D5C8EE]">carissima</span><br />
+          mea <span className="italic text-[#5A4A75]">carissima</span><br />
           omnia.
         </motion.h1>
 
@@ -208,135 +259,8 @@ const Hero = memo(function Hero() {
   )
 })
 
-// Story / Timeline Section
-const Story = memo(function Story() {
-  const containerRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  })
 
-  const timelineProgress = useTransform(scrollYProgress, [0.2, 0.8], ['0%', '100%'])
-
-  const stories = [
-    { date: "Jan '23", title: "The first hello", description: "You walked in and everything got quieter. I didn't know it then, but that was the beginning." },
-    { date: "Mar '23", title: "Our first night out", description: "You laughed at something I said and I decided right there — I wanted to make you laugh forever." },
-    { date: "Jun '23", title: "I knew", description: "Somewhere between the drive home and the goodnight text, I knew I was completely yours." },
-    { date: "Today", title: "Still here, still you", description: "Every ordinary day with you feels like something I'd write down to remember." },
-  ]
-
-  return (
-    <section id="our-story" ref={containerRef} className="relative py-32 lg:py-40 px-8 lg:px-16">
-      <div className="max-w-4xl mx-auto">
-        <SectionLabel>Our Story</SectionLabel>
-
-        {/* Clean timeline container */}
-        <div className="relative">
-          {/* Progress line */}
-          <div className="absolute left-4 lg:left-8 top-0 bottom-0 w-px bg-[#1E1A2E]/10" />
-          <motion.div
-            style={{ height: timelineProgress }}
-            className="absolute left-4 lg:left-8 top-0 w-px bg-gradient-to-b from-[#9B7FC8] to-[#BDB0D8]"
-          />
-
-          <div className="space-y-0">
-            {stories.map((story, i) => {
-              const ref = useRef(null)
-              const isInView = useInView(ref, { once: true, margin: '-50px' })
-
-              return (
-                <motion.div
-                  key={i}
-                  ref={ref}
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-                  transition={{ duration: 0.7, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative pl-16 lg:pl-24 pb-16 last:pb-0"
-                >
-                  {/* Clean dot */}
-                  <div className="absolute left-2 lg:left-6 top-1 w-2 h-2 rounded-full bg-[#F7F5FC] border-2 border-[#9B7FC8]" />
-
-                  <span className="font-serif italic text-sm text-[#6B5A80] mb-2 block">{story.date}</span>
-                  <h3 className="font-serif text-2xl lg:text-3xl font-light mb-4 leading-tight text-[#1E1A2E]">{story.title}</h3>
-                  <p className="text-sm text-[#4A4060] leading-relaxed max-w-lg">{story.description}</p>
-                </motion.div>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-})
-
-// Clean Gallery with Collage Layout
-const Gallery = memo(function Gallery() {
-  const photos = [
-    { id: 1, span: 'col-span-2 row-span-2', color: '#7A68B0', aspect: 'aspect-square' },
-    { id: 2, span: '', color: '#6858A0', aspect: 'aspect-square' },
-    { id: 3, span: '', color: '#8A78C0', aspect: 'aspect-square' },
-    { id: 4, span: '', color: '#5E5090', aspect: 'aspect-[4/3]' },
-    { id: 5, span: 'col-span-2', color: '#7A68B0', aspect: 'aspect-[2/1]' },
-    { id: 6, span: '', color: '#8A78C0', aspect: 'aspect-square' },
-  ]
-
-  return (
-    <section id="gallery" className="relative py-32 lg:py-40 px-8 lg:px-16 bg-[#F2F0FA]">
-      <div className="max-w-6xl mx-auto">
-        <SectionLabel>Gallery</SectionLabel>
-
-        {/* Clean collage grid */}
-        <div className="grid grid-cols-4 gap-3 lg:gap-4 auto-rows-[180px] lg:auto-rows-[220px]">
-          {photos.map((photo, i) => {
-            const ref = useRef(null)
-            const isInView = useInView(ref, { once: true, margin: '-50px' })
-
-            return (
-              <motion.div
-                key={photo.id}
-                ref={ref}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className={`relative rounded-xl overflow-hidden group cursor-pointer ${photo.span || ''}`}
-              >
-                {/* Clean color background */}
-                <div
-                  className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105"
-                  style={{
-                    background: `linear-gradient(135deg, ${photo.color} 0%, ${photo.color}dd 100%)`,
-                  }}
-                />
-
-                {/* Subtle overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                {/* Center content */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-serif italic text-white/70 text-sm tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    Your photo here
-                  </span>
-                </div>
-
-                {/* Clean border on hover */}
-                <div className="absolute inset-0 rounded-xl border-2 border-white/0 group-hover:border-white/20 transition-colors duration-300" />
-              </motion.div>
-            )
-          })}
-        </div>
-
-        {/* Clean divider */}
-        <div className="mt-16 flex justify-center">
-          <div className="flex items-center gap-6 text-[#BDB0D8]">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent to-[#BDB0D8]" />
-            <span className="text-xl">♡</span>
-            <div className="w-12 h-px bg-gradient-to-l from-transparent to-[#BDB0D8]" />
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-})
+// Gallery is now handled by Gallery3D component
 
 // Reasons Section - Clean Grid
 const Reasons = memo(function Reasons() {
@@ -350,7 +274,18 @@ const Reasons = memo(function Reasons() {
   ]
 
   return (
-    <section className="relative py-32 lg:py-40 px-8 lg:px-16">
+    <section
+      className="relative py-32 lg:py-40 px-8 lg:px-16"
+    >
+      {/* Fixed background for parallax effect */}
+      <div
+        className="fixed inset-0 -z-10"
+        style={{
+          backgroundImage: 'url(/stitch.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
       <div className="max-w-5xl mx-auto">
         <SectionLabel>Reasons</SectionLabel>
 
@@ -364,10 +299,11 @@ const Reasons = memo(function Reasons() {
               <motion.div
                 key={i}
                 ref={ref}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="relative p-8 lg:p-10 group"
+                initial={{ opacity: 0, y: 35 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 35 }}
+                whileHover={{ y: -6, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
+                transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className="relative p-8 lg:p-10 group cursor-pointer border border-transparent hover:border-[#9B7FC8]/10 rounded-lg transition-colors duration-500"
               >
                 {/* Clean subtle background on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#9B7FC8]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -398,33 +334,23 @@ const Letter = memo(function Letter() {
   return (
     <section
       id="letter"
-      className="relative py-24 sm:py-32 lg:py-40 px-2 sm:px-8 lg:px-16 overflow-hidden"
-      style={{
-        background: 'radial-gradient(ellipse 80% 60% at 50% 70%, #1E1238 0%, #110C24 45%, #0A0715 100%)',
-      }}
+      className="relative py-24 sm:py-32 lg:py-40 px-2 sm:px-8 lg:px-16 overflow-hidden bg-[#F7F5FC]"
     >
-      {/* Deep edge vignette to frame the book */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 70% 80% at 50% 50%, transparent 40%, rgba(4,3,12,0.65) 100%)',
-        }}
-      />
-
-      {/* Warm amber/gold glow — mimics light falling on the book from above */}
+      {/* Gentle lilac glow falling from above */}
       <div className="absolute pointer-events-none"
         style={{
           top: '15%', left: '50%',
           transform: 'translateX(-50%)',
           width: 'clamp(300px, 45vw, 620px)',
           height: 'clamp(180px, 28vw, 380px)',
-          background: 'radial-gradient(ellipse at 50% 30%, rgba(212,175,55,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse at 50% 30%, rgba(155,127,200,0.12) 0%, transparent 70%)',
           filter: 'blur(40px)',
         }}
       />
 
-      {/* Lavender bloom — reflects the book cover colour into the bg */}
+      {/* Lavender bloom reflection */}
       <motion.div
-        animate={{ scale: [1, 1.06, 1], opacity: [0.55, 0.75, 0.55] }}
+        animate={{ scale: [1, 1.06, 1], opacity: [0.35, 0.55, 0.35] }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute pointer-events-none"
         style={{
@@ -432,21 +358,21 @@ const Letter = memo(function Letter() {
           transform: 'translateX(-50%)',
           width: 'clamp(260px, 40vw, 560px)',
           height: 'clamp(260px, 40vw, 560px)',
-          background: 'radial-gradient(circle, rgba(90,55,160,0.28) 0%, rgba(74,53,112,0.10) 55%, transparent 80%)',
+          background: 'radial-gradient(circle, rgba(155,127,200,0.2) 0%, rgba(155,127,200,0.05) 55%, transparent 80%)',
           filter: 'blur(55px)',
         }}
       />
 
-      {/* Subtle horizontal table-surface highlight under the book */}
+      {/* Subtle surface shadow under the book */}
       <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
         style={{
-          background: 'linear-gradient(to top, rgba(30,18,56,0.8) 0%, transparent 100%)',
+          background: 'linear-gradient(to top, rgba(155,127,200,0.1) 0%, transparent 100%)',
         }}
       />
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Section label adjusted for dark bg */}
+        {/* Section label adjusted for light bg */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -454,8 +380,8 @@ const Letter = memo(function Letter() {
           transition={{ duration: 0.6 }}
           className="mb-16 text-center"
         >
-          <span className="text-[11px] tracking-[0.25em] uppercase text-[#C0AEDE] font-medium">
-            A Letter
+          <span className="text-[11px] tracking-[0.25em] uppercase text-[#9B7FC8] font-medium">
+            Mini Book
           </span>
         </motion.div>
 
@@ -476,6 +402,23 @@ const Letter = memo(function Letter() {
 const FinalCTA = memo(function FinalCTA() {
   return (
     <section className="relative py-40 lg:py-56 px-8 lg:px-16 overflow-hidden">
+      {/* Hero background image */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: 'url(/hero01.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+
+      {/* Dark overlay for text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/40 to-black/60" />
+
+      {/* Butterflies Canvas background */}
+      <Butterflies />
+
       {/* Background accents */}
       <div className="absolute inset-0">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-[#D5C8EE]/10 blur-[150px]" />
@@ -485,13 +428,14 @@ const FinalCTA = memo(function FinalCTA() {
       {/* Two-column layout: text left, image right */}
       <div className="relative z-10 max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 lg:gap-24">
 
-        {/* Left — text content */}
-        <div className="flex-1">
+        {/* Text content - centered */}
+        <div className="flex-1 text-center">
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 15, letterSpacing: '0.2em' }}
+            whileInView={{ opacity: 1, y: 0, letterSpacing: '0.3em' }}
             viewport={{ once: true }}
-            className="text-[#8A82A0] text-xs tracking-[0.3em] uppercase mb-6"
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-[#8A82A0] text-xs uppercase mb-6"
           >
             Forever &amp; always
           </motion.p>
@@ -514,11 +458,10 @@ const FinalCTA = memo(function FinalCTA() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-[#8A82A0] text-lg"
           >
-            Every day, every moment, every breath — I&apos;m grateful it&apos;s with you.
           </motion.p>
 
           {/* Floating hearts */}
-          <div className="mt-16 flex gap-6">
+          <div className="mt-16 flex gap-6 justify-center">
             {[...Array(5)].map((_, i) => (
               <motion.span
                 key={i}
@@ -526,34 +469,10 @@ const FinalCTA = memo(function FinalCTA() {
                 transition={{ duration: 4, repeat: Infinity, delay: i * 0.4 }}
                 className="text-lg text-[#9B7FC8]/30"
               >
-                ♡
               </motion.span>
             ))}
           </div>
         </div>
-
-        {/* Right — photo, vertically centred with text */}
-        <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="hidden md:flex flex-1 justify-center items-center pointer-events-none select-none"
-          style={{ opacity: 0.18 }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/foreheadkiss.png"
-            alt=""
-            style={{
-              width: 'clamp(260px, 28vw, 420px)',
-              display: 'block',
-              objectFit: 'contain',
-              maskImage: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 22%, black 50%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 22%, black 50%)',
-            }}
-          />
-        </motion.div>
 
       </div>
     </section>
@@ -563,18 +482,14 @@ const FinalCTA = memo(function FinalCTA() {
 // Footer - Clean minimal
 const Footer = memo(function Footer() {
   return (
-    <footer className="relative py-16 px-8 lg:px-16 border-t border-[#1E1A2E]/5">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-        <p className="font-serif italic text-[#8A82A0] text-base">
-          made with love, just for you
+    <footer className="relative py-16 px-8 lg:px-16 border-t border-[#1E1A2E]/5 bg-[#F7F5FC]">
+      <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 select-none w-full">
+        <p className="font-sans text-xs tracking-[0.15em] text-[#8A82A0]/80 uppercase">
+          &copy; 2026. All rights reserved.
         </p>
-        <motion.span
-          animate={{ scale: [1, 1.18, 1], opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 3, repeat: Infinity }}
-          className="text-2xl text-[#9B7FC8]"
-        >
-          ♡
-        </motion.span>
+        <p className="font-serif italic text-[#8A82A0] text-base">
+          Designed &amp; Developed by Shaun
+        </p>
       </div>
     </footer>
   )
@@ -582,17 +497,124 @@ const Footer = memo(function Footer() {
 
 // Main Page
 export default function Home() {
+  const [hasFlower, setHasFlower] = useState(false)
+  const [showFlowerPopup, setShowFlowerPopup] = useState(false)
+  const [hasMinimizedOnce, setHasMinimizedOnce] = useState(false)
+  const [shouldShake, setShouldShake] = useState(false)
+  const [showFlyingFlower, setShowFlyingFlower] = useState(false)
+  const [flyingFlowerPos, setFlyingFlowerPos] = useState({ x: 0, y: 0 })
+  const [popupLabel, setPopupLabel] = useState('Clever move! you can have my gift')
+  const cartRef = useRef<HTMLButtonElement>(null)
+  const targetPositionRef = useRef({ x: 0, y: 0 })
+
+  const handleGameWin = () => {
+    setHasFlower(true)
+    setShowFlowerPopup(true)
+    setPopupLabel('Clever move! you can have my gift')
+  }
+
+  const handleCartClick = () => {
+    if (hasFlower) {
+      setPopupLabel('MY ROSE LILIIES')
+      setShowFlowerPopup(!showFlowerPopup)
+    }
+  }
+
+  const handlePopupClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+
+    // Calculate position before hiding popup
+    if (cartRef.current) {
+      const rect = cartRef.current.getBoundingClientRect()
+      const centerX = rect.left + rect.width / 2
+      const centerY = rect.top + rect.height / 2
+      targetPositionRef.current = { x: centerX, y: centerY }
+
+      // Start flying flower animation
+      setFlyingFlowerPos({ x: window.innerWidth / 2, y: window.innerHeight / 2 })
+      setShowFlyingFlower(true)
+
+      // Animate to basket
+      setTimeout(() => {
+        setFlyingFlowerPos({ x: centerX, y: centerY })
+      }, 50)
+    }
+
+    setHasMinimizedOnce(true)
+    setShouldShake(true)
+    setTimeout(() => setShouldShake(false), 500)
+    setShowFlowerPopup(false)
+
+    // Hide flying flower after animation
+    setTimeout(() => setShowFlyingFlower(false), 600)
+  }
+
   return (
     <main>
-      <Navigation />
+      <Navigation hasFlower={hasFlower} onCartClick={handleCartClick} cartRef={cartRef} hasMinimizedOnce={hasMinimizedOnce} shouldShake={shouldShake} />
       <Hero />
       <SectionDivider />
-      <Story />
-      <Gallery />
+      <FlowerMatchingGame onWin={handleGameWin} />
+      <Gallery3D />
       <Reasons />
       <Letter />
+      <Fireworks />
       <FinalCTA />
       <Footer />
+
+      {/* Flower Popup */}
+      <AnimatePresence>
+        {showFlowerPopup && hasFlower && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={handlePopupClick}
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm p-8 cursor-pointer"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8 text-center"
+            >
+              <span className="text-white/90 text-sm tracking-[0.2em] uppercase font-light">
+                {popupLabel}
+              </span>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{
+                scale: 0.05,
+                opacity: 0
+              }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
+              className="relative"
+            >
+              <img
+                src="/flower.png"
+                alt="Your Bouquet"
+                className="w-[80vw] h-[80vh] object-contain"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Flying flower animation */}
+      <AnimatePresence>
+        {showFlyingFlower && (
+          <motion.img
+            initial={{ x: window.innerWidth / 2, y: window.innerHeight / 2, scale: 1, opacity: 1 }}
+            animate={{ x: flyingFlowerPos.x, y: flyingFlowerPos.y, scale: 0.1, opacity: 0 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            src="/flower.png"
+            alt="Flying Flower"
+            className="fixed z-[70] w-20 h-20 object-contain pointer-events-none"
+          />
+        )}
+      </AnimatePresence>
     </main>
   )
 }
